@@ -1,2 +1,1 @@
-# GlyphCoInterface
-OSHashem/GlyphCoInterface
+# ATSD-Builder

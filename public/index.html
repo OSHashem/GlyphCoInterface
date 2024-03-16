@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ATSD Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/Pictures/owl.ico">
+</head>
+<body>
+    <div id="container">
+        <div id="toolbar">
+            <button class="button" id="saveWordBtn">Submit Word</button>
+            <button class="button" id="clearBtn">Clear</button>
+            <p>Please Write:</p> 
+            <p id="wordToWrite"></p>
+            <button class="button" id="newWordBtn">New Word</button>
+            <input type="text" id="customWord" placeholder="Custom Word">
+            <button class="setWordBtn" id="setWordBtn">Set</button>
+            <!-- Add the "Modify" button -->
+            <button class="button" id="modifyBtn">Modify Data</button>
+        </div>
+        <div>
+            <canvas id="drawingBoard" width="800" height="500"></canvas>
+        </div>
+    
+    </div>
+    <script type="module" src="client.js" ></script>
+</body>
+</html>
