@@ -203,64 +203,12 @@ async function sendBlobToServer(inputFile) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
-// Function to retrieve metadata of files from Google Drive
-async function retrieveFilesMetadata() {
-    try {
-      const response = await drive.files.list({
-        pageSize: 10, // Maximum number of files to retrieve
-        fields: 'files(id, name)', // Specific fields to retrieve (e.g., file ID and name)
-      });
-      const files = response.data.files;
-      // Display or process the retrieved files metadata as needed
-      console.log('Files Metadata:', files);
-      return files;
-    } catch (error) {
-      console.error('Error retrieving files metadata:', error.message);
-      throw error;
-    }
-  }
-  
   
   // Event listener for the "Modify" button
   document.getElementById('modifyBtn').addEventListener('click', () => {
     // Redirect the user to a new page when the "Modify" button is clicked
     window.location.href = '/modify.html';
 });
-    
-// Function to fetch files from Google Drive and populate the dropdown
-async function populateFileDropdown() {
-    try {
-        const response = await fetch('/list-files'); // Assuming you have an endpoint in your Express server to handle this request
-        if (response.ok) {
-            const files = await response.json();
-            const fileDropdown = document.getElementById('fileDropdown');
-            // Clear existing options
-            fileDropdown.innerHTML = '';
-            // Add each file as an option in the dropdown
-            files.forEach(file => {
-                const option = document.createElement('option');
-                option.value = file.id;
-                option.textContent = file.name;
-                fileDropdown.appendChild(option);
-            });
-        } else {
-            console.error('Error fetching files from server:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error fetching files from server:', error.message);
-    }
-}
-
-// Call this function when the window loads to populate the dropdown
-// window.onload = function() {
-    populateFileDropdown();
-// };
-
-
-
-// Call the fetchPNGFiles function when the window loads
-window.onload = fetchPNGFiles;
 
 
 //////////////////////////////////////////////////////////////////////////////

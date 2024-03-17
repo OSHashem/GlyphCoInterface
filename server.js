@@ -56,44 +56,6 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-// Route for updating a file
-app.post('/update-file', upload.single('file'), async (req, res) => {
-  const fileId = 'YOUR_FILE_ID_HERE'; // Specify the ID of the file to update
-  const updatedFile = req.file;
-
-  try {
-    await updateFileInGoogleDrive(fileId, updatedFile.originalname, updatedFile.mimetype, updatedFile.buffer);
-    res.status(200).send('File updated successfully on Google Drive.');
-  } catch (error) {
-    console.error('Error updating file:', error.message);
-    res.status(500).send('Error updating file on Google Drive.');
-  }
-});
-
-// Update file in Google Drive
-async function updateFileInGoogleDrive(fileId, fileName, mimeType, fileBuffer) {
-  try {
-    const fileMetadata = {
-      name: decodeURIComponent(fileName),
-    };
-
-    const media = {
-      mimeType: mimeType,
-      body: stream.Readable.from(fileBuffer),
-    };
-
-    const response = await drive.files.update({
-      fileId: fileId,
-      resource: fileMetadata,
-      media: media,
-    });
-    console.log('File updated successfully. File ID:', response.data.id);
-  } catch (error) {
-    console.error('Error updating file:', error.message);
-    throw error;
-  }
-}
-
 app.get('/list-files', async (req, res) => {
   try {
       const response = await drive.files.list({
