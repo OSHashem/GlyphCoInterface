@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Modify Files</title>
+    <title>Modify Data</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Pictures/what-is-the-eye-of-horus-jewelry.webp">
 </head>
 <body>
-    <h1>List of PNG Files from Google Drive</h1>
+
+    <nav>
+        <a href="index.html" class="navbar-link">
+            <img src="Pictures/owl.ico" alt="Navbar Image" class="navbar-img" >GlyphCo
+        </a>
+
+        <!-- <a class="navbar-link" href="#">Home</a> -->
+        <a  class="navbar-link"  href="modify.html">
+            <img src="Pictures/pencil_11761763.png" alt="Navbar Image" style="height: 20px; width: 20px;">Modify Data</a> 
+
+    </nav>
+
+    <h2 style="color: #B58440;">Submitted drwaings</h2>
     <div id="fileList"></div>
 
     <script>
@@ -30,7 +43,7 @@
                         anchor.target = '_blank'; // Open in a new tab
                         const image = document.createElement('img');
                         // Set the image source
-                        image.src = `/get-file-content/${file.id}`; // Assuming the endpoint URL format is /get-file-content/:id
+                        image.src = `https://drive.google.com/file/d/1MRLzqA1xP0ojo3E0KM_WI79JMkj--Dmv/view?usp=sharing`; // Assuming the endpoint URL format is /get-file-content/:id
                         // Append the image to the anchor
                         anchor.appendChild(image);
                         // Append the anchor to the file element
@@ -48,7 +61,7 @@
         }
 
         // Call the fetchPNGFiles function when the window loads
-        window.onload = fetchPNGFiles;
+        fetchPNGFiles();
     </script>
 </body>
 </html>

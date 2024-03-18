@@ -210,7 +210,6 @@ async function sendBlobToServer(inputFile) {
     window.location.href = '/modify.html';
 });
 
-
 //////////////////////////////////////////////////////////////////////////////
 
 //trim canvas function to minimize image size, written by https://github.com/remy, modified to center instead of trimming

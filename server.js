@@ -2,6 +2,8 @@ const express = require('express');
 const { google } = require('googleapis');
 const multer = require('multer');
 const stream = require('stream');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const upload = multer();
@@ -70,7 +72,7 @@ app.get('/list-files', async (req, res) => {
   }
 });
 
-// Define a route to handle fetching file content based on file ID
+//Define a route to handle fetching file content based on file ID
 app.get('/get-file-content', (req, res) => {
   const fileId = req.query.id; // Get the file ID from the query parameters
   const filePath = path.join(__dirname, 'files', fileId); // Assuming files are stored in a directory named 'files'
@@ -92,6 +94,7 @@ app.get('/get-file-content', (req, res) => {
       res.status(404).send('File not found'); // If the file does not exist, send a 404 response
   }
 });
+
 
 //////////////////////////////////////////////////////////////////////////////////
 
