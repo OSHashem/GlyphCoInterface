@@ -54,7 +54,7 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
     console.error('Error uploading file:', error.message);
     throw error;
   }
-}''
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 

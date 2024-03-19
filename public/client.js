@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 const toolbar = document.getElementById('toolbar');
 const customWord = document.getElementById("customWord");
 const wordToWrite = document.getElementById("wordToWrite");
+// import Swal from "sweetalert2";
 
 //constants & variables
 let isDrawing = false;
@@ -28,57 +29,61 @@ canvas.addEventListener('touchend', handleDrawingEnd);
 //event listeners for the toolbar buttons
 toolbar.addEventListener('click', e => {
     if (e.target.id === 'saveWordBtn') {
-        if(word.length== 0){
-            alert("Please Write First!");
+        if (word.length == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Please write first!',
+            });
             return;
-        }
-        else{
+        } else {
             //sets initial drawing time to 0, updates the rest of the array
             startingTime = word[0][0][2];
-            for(let i = 0; i<word.length; i++){
-                for(let j=0; j<word[i].length;j++){
-                    word[i][j][2]-=startingTime;
+            for (let i = 0; i < word.length; i++) {
+                for (let j = 0; j < word[i].length; j++) {
+                    word[i][j][2] -= startingTime;
                 }
             }
-            
+
             //saving the array as a JSON file
-            word = [[wordToWrite.innerHTML],[startingTime],word];
+            word = [[wordToWrite.innerHTML], [startingTime], word];
             const data = JSON.stringify(word);
             const jsonFileName = wordToWrite.innerHTML + startingTime + '.json';
             const jsonFile = new File([data], encodeURIComponent(jsonFileName), { type: 'application/json' });
             sendBlobToServer(jsonFile);
-        
+
             //saving the drawing as a PNG file
             const newCanvas = trimCanvas(canvas);
             newCanvas.toBlob(async function(blob) {
-              const pngFileName = wordToWrite.innerHTML + startingTime + '.png';
-              const pngFile = new File([blob], encodeURIComponent(pngFileName), { type: 'image/png' });
-              sendBlobToServer(pngFile);
+                const pngFileName = wordToWrite.innerHTML + startingTime + '.png';
+                const pngFile = new File([blob], encodeURIComponent(pngFileName), { type: 'image/png' });
+                sendBlobToServer(pngFile);
 
-              alert('Word Submitted');
+                Swal.fire('Success!', 'Word Submitted', 'success');
             });
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
     }
 
-    if (e.target.id === 'clearBtn') {    
+    if (e.target.id === 'clearBtn') {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
     }
 
-    if (e.target.id === 'newWordBtn') {    
+    if (e.target.id === 'newWordBtn') {
         generateWord();
     }
 
-    if (e.target.id === 'setWordBtn') {    
+    if (e.target.id === 'setWordBtn') {
         const text = customWord.value;
-        if(text != ""){
+        if (text != "") {
             wordToWrite.innerHTML = text;
         }
         customWord.value = "";
     }
 });
+
 
 //on first touch, initializes drawing and draws a dot using the helper function below
 function handleWritingStart(e) {
