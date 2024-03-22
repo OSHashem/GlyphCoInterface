@@ -10,6 +10,7 @@ const upload = multer();
 const port = 3000;
 
 const serviceAccountKey = require('./secret/inspired-shell-417401-a25f25878ef3.json');
+const { file } = require('googleapis/build/src/apis/file');
 
 const auth = new google.auth.GoogleAuth({
   credentials: serviceAccountKey,
@@ -22,6 +23,7 @@ const drive = google.drive({ version: 'v3', auth });
 async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId) {
   try {
     const fileMetadata = {
+      originalName: fileName,
       name: decodeURIComponent(fileName),
       parents: [folderId],
     };
@@ -47,17 +49,17 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
 // Route for upload
 app.post('/upload-file', upload.single('file'), async (req, res) => {
   const uploadedFile = req.file;
-    const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Parent folder ID
+  const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Parent folder ID
 
-  const word = req.body.word; // Random word generated when submitting
-  
+  const word = req.body.word;
+
   try {
-    // Create folder for the random word if it doesn't exist
+    // Find or create folder for the random word
     let folder = await findOrCreateFolder(word, folderId);
-    
+
     // Upload file to the created folder
     await uploadFileToGoogleDrive(uploadedFile.originalname, uploadedFile.mimetype, uploadedFile.buffer, folder);
-    
+
     res.status(200).send('File uploaded successfully to Google Drive.');
   } catch (error) {
     console.error('Error uploading file:', error.message);
@@ -86,6 +88,19 @@ async function createFolder(folderName, parentFolderId) {
   }
 }
 
+async function doesFolderExist(folderName, parentFolderId) {
+  try {
+    const response = await drive.files.list({
+      q: `name='${folderName}' and '${parentFolderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+      fields: 'files(id)',
+    });
+
+    return response.data.files.some(file => file.name === folderName);
+  } catch (error) {
+    console.error('Error checking if folder exists:', error.message);
+    throw error;
+  }
+}
 
 // Function to find or create folder in Google Drive
 async function findOrCreateFolder(folderName, parentFolderId) {
@@ -94,7 +109,7 @@ async function findOrCreateFolder(folderName, parentFolderId) {
       q: `name='${folderName}' and '${parentFolderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
       fields: 'files(id)',
     });
-    
+
     if (response.data.files.length > 0) {
       // Folder already exists, return its ID
       return response.data.files[0].id;

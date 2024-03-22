@@ -199,6 +199,7 @@ async function sendBlobToServer(inputFile) {
         // Retrieve the word to write
         const wordToWriteParagraph = document.getElementById('wordToWrite');
         const word = wordToWriteParagraph.textContent.trim();
+        console.log(word)
 
         // Append the word to the FormData
         formData.append('word', word);
