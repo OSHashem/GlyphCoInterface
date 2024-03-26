@@ -22,6 +22,34 @@
 
     <h2 style="color: #B58440;">Submitted drawings</h2>
     <div id="fileList"></div>
+    <style>
+        #redraw {
+          border: 1px solid black;
+        }
+      </style>
+    <div>
+        <!-- <canvas id="redraw" width="800" height="600"></canvas> -->
+    </div>
+    <script src="extract-positions.js"></script>
+<!-- <script type="text/javascript">
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = 800;
+canvas.height = 600;
+
+for (let i = 0; i < positions.length - 1; i++) {
+  const [x1, y1] = positions[i];
+  const [x2, y2] = positions[i + 1];
+
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+}
+
+document.body.appendChild(canvas);
+</script> -->
 
     <script>
         async function fetchFiles() {
@@ -42,10 +70,15 @@
                 const drawingDiv = document.createElement('div');
                 drawingDiv.classList.add('drawing-item');
 
-                // Create an image element to display the drawing
-                const image = document.createElement('img');
-                image.src = file.thumbnailLink; // Assuming thumbnailLink contains the URL of the drawing
+                // Create an anchor tag and image element
+      const anchor = document.createElement('a')
+      anchor.href = 'edit.html'
+      anchor.target = '_blank' // Open the link in a new tab
+      const image = document.createElement('img')
+      image.src = file.thumbnailLink // Assuming thumbnailLink contains the URL of the thumbnail
 
+      // Append the image to the anchor tag
+      anchor.appendChild(image)
                 // Append the image to the drawing div
                 drawingDiv.appendChild(image);
 
