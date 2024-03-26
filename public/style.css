@@ -124,3 +124,15 @@ nav ul li a {
     margin-left: 10px; /* Add right margin for spacing */
     text-decoration: none;
 }
+
+#background-image {
+    background-image: url('Pictures/King.png');
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }

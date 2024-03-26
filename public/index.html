@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="height=device-height, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="Pictures/what-is-the-eye-of-horus-jewelry.webp">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="height=device-height, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Home</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="Pictures/what-is-the-eye-of-horus-jewelry.webp">
+    </head>
+    <body>
+    <!-- <div id="background-image"></div> -->
+
+    
     <nav>
         <a href="index.html" class="navbar-link">
             <img src="Pictures/owl.ico" alt="Navbar Image" class="navbar-img" >GlyphCo
         </a>
-
+        
         <a  class="navbar-link"  href="modify.html">
             <img src="Pictures/pencil_11761763.png" alt="Navbar Image" style="height: 20px; width: 20px;">Modify Data</a> 
+            
+        </nav>
+        <div id="container">
+            <div id="toolbar">
+                <button class="button" id="saveWordBtn">Submit Word</button>
+                <button class="button" id="clearBtn">Clear</button>
+                <p>Please Write:</p> 
+                <p id="wordToWrite"></p>
+                <button class="button" id="newWordBtn">New Word</button>
+                <input type="text" id="customWord" placeholder="Custom Word">
+                <button class="setWordBtn" id="setWordBtn">Set</button>
+                <!-- <button class="button"  id="modifyBtn">Modify Data</button> -->
+                
+            </div>
+            
+            <div>
+                <canvas id="drawingBoard" width="800" height="500"></canvas>
+            </div>
+            <!-- <script type="text/javascript">
+    var c=document.getElementById("yellow");
+var ctx=c.getContext("2d");
+var json=[
+  {"x":"247", "y":"373"},
+  {"x":"333",   "y":"390"},
+  {"x":"5",   "y":"21" },
+  {"x":"245", "y":"0"  },
+  {"x":"247", "y":"373"}
+];
 
-    </nav>
-    <div id="container">
-        <div id="toolbar">
-            <button class="button" id="saveWordBtn">Submit Word</button>
-            <button class="button" id="clearBtn">Clear</button>
-            <p>Please Write:</p> 
-            <p id="wordToWrite"></p>
-            <button class="button" id="newWordBtn">New Word</button>
-            <input type="text" id="customWord" placeholder="Custom Word">
-            <button class="setWordBtn" id="setWordBtn">Set</button>
-            <!-- <button class="button"  id="modifyBtn">Modify Data</button> -->
+ctx.beginPath();
+for(var i in json){
+  ctx.lineTo(json[i].x,json[i].y);
+}
+ctx.closePath();
+ctx.fillStyle="#ffca05";
+ctx.globalAlpha=0.7;
+ctx.strokeStyle="#ffff";
+ctx.fill();
+ctx.stroke();
+</script> -->
 
-        </div>
-        <div>
-            <canvas id="drawingBoard" width="800" height="500"></canvas>
-        </div>
     
     </div>
     <script type="module" src="client.js"></script>
