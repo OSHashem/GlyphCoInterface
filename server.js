@@ -4,16 +4,30 @@ const multer = require('multer');
 const stream = require('stream');
 const path = require('path');
 const fs = require('fs');
-
 const app = express();
 const upload = multer();
 const port = 3000;
+require('dotenv').config();
+// console.log(process.env)
+
+const projectId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID;
+const privateKeyId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY_ID;
+const privateKey = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n'); // Replace escaped newlines
+const clientEmail = process.env.GOOGLE_APPLICATION_CREDENTIALS_CLIENT_EMAIL;
+
+// console.log(projectId, privateKeyId, privateKey,clientEmail);
 
 const serviceAccountKey = require('./secret/inspired-shell-417401-a25f25878ef3.json');
 const { file } = require('googleapis/build/src/apis/file');
 
 const auth = new google.auth.GoogleAuth({
-  credentials: serviceAccountKey,
+  credentials:{
+    client_email: clientEmail,
+    private_key: privateKey,
+    project_id :  projectId,
+    private_key_id :  privateKeyId,
+
+  },
   scopes: 'https://www.googleapis.com/auth/drive',
 });
 
