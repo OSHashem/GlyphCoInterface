@@ -136,3 +136,69 @@ nav ul li a {
     height: 100%;
     z-index: -1;
   }
+
+
+
+
+/*  */
+/*  */
+/*  */
+/*  */
+
+  body {
+    /* Add a higher z-index value to ensure that the loading screen appears above the other elements */
+    position: relative;
+    z-index: 1;
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.dott {
+    animation: dot-scale-opacity 1.8s linear infinite;
+}
+
+.dot-1 {
+    animation-delay: 0.2s;
+}
+
+.dot-2 {
+    animation-delay: 0.4s;
+}
+
+.dot-3 {
+    animation-delay: 0.6s;
+}
+
+@keyframes dot-scale-opacity {
+    0% {
+        opacity: 0.25;
+        transform: scale(0.25);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.25;
+        transform: scale(1.5);
+    }
+}
