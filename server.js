@@ -10,10 +10,10 @@ const port = 3000;
 require('dotenv').config();
 // console.log(process.env)
 
-const projectId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID;
-const privateKeyId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY_ID;
-const privateKey = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n'); // Replace escaped newlines
-const clientEmail = process.env.GOOGLE_APPLICATION_CREDENTIALS_CLIENT_EMAIL;
+// const projectId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID;
+// const privateKeyId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY_ID;
+// const privateKey = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY.replace(/\\n/g, '\n'); // Replace escaped newlines
+// const clientEmail = process.env.GOOGLE_APPLICATION_CREDENTIALS_CLIENT_EMAIL;
 
 // console.log(projectId, privateKeyId, privateKey,clientEmail);
 
@@ -21,13 +21,7 @@ const serviceAccountKey = require('./secret/inspired-shell-417401-a25f25878ef3.j
 const { file } = require('googleapis/build/src/apis/file');
 
 const auth = new google.auth.GoogleAuth({
-  credentials:{
-    client_email: clientEmail,
-    private_key: privateKey,
-    project_id :  projectId,
-    private_key_id :  privateKeyId,
-
-  },
+  credentials: serviceAccountKey,
   scopes: 'https://www.googleapis.com/auth/drive',
 });
 
