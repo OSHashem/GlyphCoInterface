@@ -1,14 +1,23 @@
-const express = require('express');
 const { google } = require('googleapis');
 const multer = require('multer');
 const stream = require('stream');
 const path = require('path');
 const fs = require('fs');
+const express = require('express');
 const app = express();
 const upload = multer();
 const port = 3000;
 require('dotenv').config();
 // console.log(process.env)
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// const bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+
+
 
 // const projectId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID;
 // const privateKeyId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PRIVATE_KEY_ID;
@@ -60,10 +69,13 @@ app.post('/upload-file', upload.single('file'), async (req, res) => {
   const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Parent folder ID
 
   const word = req.body.word;
+  console.log(word)
+
 
   try {
     // Find or create folder for the random word
     let folder = await findOrCreateFolder(word, folderId);
+    
 
     // Upload file to the created folder
     await uploadFileToGoogleDrive(uploadedFile.originalname, uploadedFile.mimetype, uploadedFile.buffer, folder);
@@ -72,6 +84,26 @@ app.post('/upload-file', upload.single('file'), async (req, res) => {
   } catch (error) {
     console.error('Error uploading file:', error.message);
     res.status(500).send('Error uploading file to Google Drive.');
+  }
+});
+
+app.post('/create-folder', async (req, res)  => {
+  
+  const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Replace this with the ID of the parent folder
+  
+  // const  nameOfFolder  = req.body;
+  const nameOfFolder   = req.body.nameOfFolder;
+  console.log(nameOfFolder)
+  // console.log(wordToWrite.innerHTML)
+  // console.log(partOfSpeech)
+
+
+  try {
+      const folderId = await createFolder(nameOfFolder, parentFolderId);
+      res.status(200).json({ folderId });
+  } catch (error) {
+      console.error('Error creating folder:', error.message);
+      res.status(500).json({ message: 'Error creating folder' });
   }
 });
 
@@ -89,6 +121,7 @@ async function createFolder(folderName, parentFolderId) {
       fields: 'id',
     });
     console.log('Folder created successfully. Folder ID:', response.data.id);
+    
     return response.data.id; // Return the ID of the created folder
   } catch (error) {
     console.error('Error creating folder:', error.message);
@@ -117,9 +150,12 @@ async function findOrCreateFolder(folderName, parentFolderId) {
       q: `name='${folderName}' and '${parentFolderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
       fields: 'files(id)',
     });
-
+    
+// response.data.files.length
+console.log(response.data.files.length)
     if (response.data.files.length > 0) {
       // Folder already exists, return its ID
+      console.log(response.data.files[0].id)
       return response.data.files[0].id;
     } else {
       // Folder doesn't exist, create it and return its ID
@@ -130,6 +166,7 @@ async function findOrCreateFolder(folderName, parentFolderId) {
     throw error;
   }
 }
+
 
 
 ////////////////////////////////////////////////////////////////////

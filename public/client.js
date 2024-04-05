@@ -6,6 +6,7 @@ const customWord = document.getElementById("customWord");
 const wordToWrite = document.getElementById("wordToWrite");
 // import Swal from "sweetalert2";
 
+
 //constants & variables
 let isDrawing = false;
 let currentStroke = [];
@@ -27,7 +28,7 @@ canvas.addEventListener('touchmove', handleWritingInProgress);
 canvas.addEventListener('touchend', handleDrawingEnd);
 
 //event listeners for the toolbar buttons
-toolbar.addEventListener('click', e => {
+toolbar.addEventListener('click', async e => {
     if (e.target.id === 'saveWordBtn') {
         if (word.length == 0) {
             Swal.fire({
@@ -51,14 +52,14 @@ toolbar.addEventListener('click', e => {
             const data = JSON.stringify(word);
             const jsonFileName = wordToWrite.innerHTML + startingTime + '.json';
             const jsonFile = new File([data], encodeURIComponent(jsonFileName), { type: 'application/json' });
-            sendBlobToServer(jsonFile, wordToWrite.innerHTML);
+            await sendBlobToServer(jsonFile, wordToWrite.innerHTML);
 
             //saving the drawing as a PNG file
             const newCanvas = trimCanvas(canvas);
             newCanvas.toBlob(async function (blob) {
                 const pngFileName = wordToWrite.innerHTML + startingTime + '.png';
                 const pngFile = new File([blob], encodeURIComponent(pngFileName), { type: 'image/png' });
-                sendBlobToServer(pngFile, wordToWrite.innerHTML);
+                await sendBlobToServer(pngFile, wordToWrite.innerHTML);
 
                 Swal.fire('Success!', 'Word Submitted', 'success');
             });
@@ -75,11 +76,33 @@ toolbar.addEventListener('click', e => {
     if (e.target.id === 'newWordBtn') {
         generateWord();
     }
-
+    
     if (e.target.id === 'setWordBtn') {
         const text = customWord.value;
+        // console.log(text)
         if (text != "") {
             wordToWrite.innerHTML = text;
+        //     const wordToWriteParagraph = document.getElementById('wordToWrite');
+        // const word = wordToWriteParagraph.textContent.trim();
+        // // console.log(word)
+        // // const nn = "NN";
+        //     const formData = new FormData();
+        //     formData.append('nameOfFolder',word ); 
+        //     // formData.append('partOfSpeech',nn); 
+            
+
+        //     const response =  await fetch('/create-folder', {
+        //         method: 'POST',
+        //         body: formData
+        //     });
+        //     console.log(formData.get("nameOfFolder"));
+
+        //     if (response.ok) {
+        //         const data =  response.json();
+        //         console.log('Folder created successfully. Folder ID:', data.folderId);
+        //     } else {
+        //         console.error('Error creating folder:', response.statusText);
+        //     }
         }
         customWord.value = "";
     }
@@ -146,7 +169,7 @@ function readFile(file) {
 
 //picks a word at random from the json file
 function generateWord() {
-    const promise = readFile('words_common_50.json');
+    const promise = readFile('drawings.json');
     promise.then(function (jsonData) {
         const wordArray = JSON.parse(jsonData);
         const randomWord = wordArray[Math.floor(Math.random() * wordArray.length)];
@@ -200,6 +223,8 @@ async function sendBlobToServer(inputFile) {
         const wordToWriteParagraph = document.getElementById('wordToWrite');
         const word = wordToWriteParagraph.textContent.trim();
         console.log(word)
+
+        
 
         // Append the word to the FormData
         formData.append('word', word);
