@@ -36,12 +36,12 @@
         </nav>
         <div id="container">
             <div id="toolbar">
-                <button class="button" id="saveWordBtn">Submit Word</button>
+                <button class="button" id="saveWordBtn">Submit</button>
                 <button class="button" id="clearBtn">Clear</button>
-                <p>Please Write:</p> 
+                <p>Please Draw:</p> 
                 <p id="wordToWrite"></p>
-                <button class="button" id="newWordBtn">New Word</button>
-                <input type="text" id="customWord" placeholder="Custom Word">
+                <button class="button" id="newWordBtn">New Drawing</button>
+                <input type="text" id="customWord" placeholder="Custom">
                 <button class="setWordBtn" id="setWordBtn">Set</button>
                 <!-- <button class="button"  id="modifyBtn">Modify Data</button> -->
                 
@@ -49,8 +49,7 @@
             
             <div style="display: flex; justify-content: space-between;">
                 <canvas id="drawingBoard" width="500" height="500"></canvas>
-                <div>
-                    <img src="https://raw.githubusercontent.com/OSHashem/Tesssst/main/Samples/Crown.png" style="height: 300px; width: 300px;" >  
+                <div id="imageContainer">
                 </div>
             </div>
             
@@ -96,7 +95,6 @@ ctx.strokeStyle="#ffff";
 ctx.fill();
 ctx.stroke();
 </script> -->
-
     
     </div>
     <script type="module" src="client.js"></script>

@@ -75,6 +75,7 @@ toolbar.addEventListener('click', async e => {
 
     if (e.target.id === 'newWordBtn') {
         generateWord();
+        
     }
     
     if (e.target.id === 'setWordBtn') {
@@ -82,6 +83,9 @@ toolbar.addEventListener('click', async e => {
         // console.log(text)
         if (text != "") {
             wordToWrite.innerHTML = text;
+            displayImage(text); // Ensure this line is here to display the image for the custom word
+
+
         //     const wordToWriteParagraph = document.getElementById('wordToWrite');
         // const word = wordToWriteParagraph.textContent.trim();
         // // console.log(word)
@@ -107,6 +111,55 @@ toolbar.addEventListener('click', async e => {
         customWord.value = "";
     }
 });
+
+
+const words = [
+    { word: 'mummy', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/mummy.jpeg' },
+    { word: 'Crown', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/Crown.png' },
+    { word: 'obelisk', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/obelisk.jpg' },
+    { word: 'The-Ankh', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/The-Ankh.jpg' },
+    { word: 'karnaktemple', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/karnaktemple.jpg' },
+    
+    // Add more words and image URLs here
+];
+// console.log("ddodjoasd")
+
+// Loop through the words array and create an image element for each word
+function displayImage(word) {
+    // console.log(word)
+// Find the word in the words array
+const wordObj = words.find(w => w.word === word);
+
+if (wordObj) {
+    // If the word is found, create an image element and set its source to the corresponding image URL
+    const img = document.createElement('img');
+    img.src = wordObj.imageUrl;
+    img.style.height = '300px';
+    img.style.width = '300px';
+
+    // Add the image to the imageContainer div
+    document.getElementById('imageContainer').innerHTML = '';
+    document.getElementById('imageContainer').appendChild(img);
+} else {
+    // If the word is not found, clear the imageContainer div
+    document.getElementById('imageContainer').innerHTML = '';
+}
+}
+
+// Listen for changes to the #wordToWrite element
+// document.getElementById('wordToWrite').addEventListener('input', () => {
+// Get the current value of the #wordToWrite element
+// const wordToWriteParagraph = document.getElementById('wordToWrite');
+// document.getElementById('wordToWrite').addEventListener('change', () => {
+    // Get the current value of the #wordToWrite element
+    // const wordToWriteParagraph = document.getElementById('wordToWrite');
+        // const wordToView = wordToWriteParagraph.textContent.trim();
+        // console.log(wordToView)
+
+
+    // Display the image for the current word
+    // displayImage(wordToView);
+// });
 
 
 //on first touch, initializes drawing and draws a dot using the helper function below
@@ -174,6 +227,8 @@ function generateWord() {
         const wordArray = JSON.parse(jsonData);
         const randomWord = wordArray[Math.floor(Math.random() * wordArray.length)];
         wordToWrite.innerHTML = randomWord;
+        displayImage(randomWord); // Ensure this line is here
+
     });
 }
 
