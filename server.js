@@ -8,7 +8,6 @@ const app = express();
 const upload = multer();
 const port = 3000;
 require('dotenv').config();
-// console.log(process.env)
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
 // const bodyParser = require('body-parser');
@@ -16,7 +15,6 @@ require('dotenv').config();
 // app.use(bodyParser.urlencoded({ extended: true }));
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.json());
-
 
 
 // const projectId = process.env.GOOGLE_APPLICATION_CREDENTIALS_PROJECT_ID;
@@ -69,7 +67,6 @@ app.post('/upload-file', upload.single('file'), async (req, res) => {
   const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Parent folder ID
 
   const word = req.body.word;
-  console.log(word)
 
 
   try {
@@ -91,11 +88,8 @@ app.post('/create-folder', async (req, res)  => {
   
   const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Replace this with the ID of the parent folder
   
-  // const  nameOfFolder  = req.body;
   const nameOfFolder   = req.body.nameOfFolder;
   console.log(nameOfFolder)
-  // console.log(wordToWrite.innerHTML)
-  // console.log(partOfSpeech)
 
 
   try {
@@ -125,20 +119,6 @@ async function createFolder(folderName, parentFolderId) {
     return response.data.id; // Return the ID of the created folder
   } catch (error) {
     console.error('Error creating folder:', error.message);
-    throw error;
-  }
-}
-
-async function doesFolderExist(folderName, parentFolderId) {
-  try {
-    const response = await drive.files.list({
-      q: `name='${folderName}' and '${parentFolderId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
-      fields: 'files(id)',
-    });
-
-    return response.data.files.some(file => file.name === folderName);
-  } catch (error) {
-    console.error('Error checking if folder exists:', error.message);
     throw error;
   }
 }

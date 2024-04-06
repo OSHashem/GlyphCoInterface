@@ -122,11 +122,9 @@ const words = [
     
     // Add more words and image URLs here
 ];
-// console.log("ddodjoasd")
 
 // Loop through the words array and create an image element for each word
 function displayImage(word) {
-    // console.log(word)
 // Find the word in the words array
 const wordObj = words.find(w => w.word === word);
 
@@ -145,21 +143,6 @@ if (wordObj) {
     document.getElementById('imageContainer').innerHTML = '';
 }
 }
-
-// Listen for changes to the #wordToWrite element
-// document.getElementById('wordToWrite').addEventListener('input', () => {
-// Get the current value of the #wordToWrite element
-// const wordToWriteParagraph = document.getElementById('wordToWrite');
-// document.getElementById('wordToWrite').addEventListener('change', () => {
-    // Get the current value of the #wordToWrite element
-    // const wordToWriteParagraph = document.getElementById('wordToWrite');
-        // const wordToView = wordToWriteParagraph.textContent.trim();
-        // console.log(wordToView)
-
-
-    // Display the image for the current word
-    // displayImage(wordToView);
-// });
 
 
 //on first touch, initializes drawing and draws a dot using the helper function below
@@ -277,7 +260,6 @@ async function sendBlobToServer(inputFile) {
         // Retrieve the word to write
         const wordToWriteParagraph = document.getElementById('wordToWrite');
         const word = wordToWriteParagraph.textContent.trim();
-        console.log(word)
 
         
 
