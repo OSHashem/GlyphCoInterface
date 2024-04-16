@@ -1,4 +1,4 @@
 # GlyphCoInterface
-#### This interface contains of a canvas for the user to draw inside and submit the work to the google drive
+#### This interface contains a main object, a canvas, for the user to draw inside and submit the work to a google drive
 
 
