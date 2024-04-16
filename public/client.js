@@ -52,14 +52,14 @@ toolbar.addEventListener('click', async e => {
             const data = JSON.stringify(word);
             const jsonFileName = wordToWrite.innerHTML + startingTime + '.json';
             const jsonFile = new File([data], encodeURIComponent(jsonFileName), { type: 'application/json' });
-            await sendBlobToServer(jsonFile, wordToWrite.innerHTML);
-
+            
             //saving the drawing as a PNG file
             const newCanvas = trimCanvas(canvas);
             newCanvas.toBlob(async function (blob) {
                 const pngFileName = wordToWrite.innerHTML + startingTime + '.png';
                 const pngFile = new File([blob], encodeURIComponent(pngFileName), { type: 'image/png' });
-                await sendBlobToServer(pngFile, wordToWrite.innerHTML);
+                // await sendBlobToServer(pngFile);
+                await sendBlobToServer(jsonFile,pngFile);
 
                 Swal.fire('Success!', 'Word Submitted', 'success');
             });
@@ -206,11 +206,13 @@ function readFile(file) {
 //picks a word at random from the json file
 function generateWord() {
     const promise = readFile('drawings.json');
-    promise.then(function (jsonData) {
+    promise.then(async function (jsonData) {
         const wordArray = JSON.parse(jsonData);
         const randomWord = wordArray[Math.floor(Math.random() * wordArray.length)];
         wordToWrite.innerHTML = randomWord;
         displayImage(randomWord); // Ensure this line is here
+
+    
 
     });
 }
@@ -252,10 +254,11 @@ const dot = (e) => {
 
 //sends a file to the server (server.js) to be uploaded
 // Updated function to send file to server
-async function sendBlobToServer(inputFile) {
+async function sendBlobToServer(jsonFile,pngFile) {
     try {
         const formData = new FormData();
-        formData.append('file', inputFile); // Append the file without specifying the filename
+        formData.append('jsonFile', jsonFile);
+        formData.append('pngFile', pngFile); // Append the file without specifying the filename
 
         // Retrieve the word to write
         const wordToWriteParagraph = document.getElementById('wordToWrite');

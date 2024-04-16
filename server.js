@@ -9,7 +9,7 @@ const upload = multer();
 const port = 3000;
 require('dotenv').config();
 // app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+app.use(express.json());
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -62,29 +62,31 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
 }
 
 // Route for upload
-app.post('/upload-file', upload.single('file'), async (req, res) => {
-  const uploadedFile = req.file;
-  const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Parent folder ID
-
-  const word = req.body.word;
-
+app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' }]), async (req, res) => {
+  const jsonFile = req.files['jsonFile'][0]; // Access the JSON file
+  const pngFile = req.files['pngFile'][0]; // Access the PNG file
+  const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Your predefined parent folder ID
+  const word = req.body.word; // The associated word
 
   try {
-    // Find or create folder for the random word
-    let folder = await findOrCreateFolder(word, folderId);
-    
+      // Find or create folder for the word
+      let folder = await findOrCreateFolder(word, folderId);
 
-    // Upload file to the created folder
-    await uploadFileToGoogleDrive(uploadedFile.originalname, uploadedFile.mimetype, uploadedFile.buffer, folder);
+      // Upload JSON file to the created or found folder
+      await uploadFileToGoogleDrive(jsonFile.originalname, jsonFile.mimetype, jsonFile.buffer, folder);
+      
+      // Upload PNG file to the same folder
+      await uploadFileToGoogleDrive(pngFile.originalname, pngFile.mimetype, pngFile.buffer, folder);
 
-    res.status(200).send('File uploaded successfully to Google Drive.');
+      res.status(200).send('Files uploaded successfully to Google Drive.');
   } catch (error) {
-    console.error('Error uploading file:', error.message);
-    res.status(500).send('Error uploading file to Google Drive.');
+      console.error('Error uploading files:', error.message);
+      res.status(500).send('Error uploading files to Google Drive.');
   }
 });
 
-app.post('/create-folder', async (req, res)  => {
+
+app.post('/create-folder', upload.none(), async (req, res)  => {
   
   const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Replace this with the ID of the parent folder
   
