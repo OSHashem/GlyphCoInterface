@@ -63,7 +63,7 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
 
 // Route for upload
 app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' }]), async (req, res) => {
-  const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar
+  const folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // Fares
   const word = req.body.word; // The associated word
   
   try {
@@ -94,7 +94,7 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
 
 app.post('/create-folder', upload.none(), async (req, res)  => {
   
-  const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar
+  const parentFolderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // Fares
   
   const nameOfFolder   = req.body.nameOfFolder;
   console.log(nameOfFolder)
@@ -238,3 +238,42 @@ async function createUniqueFilenamesForNewFiles(baseWord, auth) {
 
   return { pngFileName, jsonFileName };
 }
+
+///////////////////////////////////////////////////////////////////////
+
+async function deleteAllFiles(auth) {
+  const drive = google.drive({ version: 'v3', auth });
+  let nextPageToken = null;
+
+  do {
+      // Fetch files according to the criteria
+      const response = await drive.files.list({
+          pageSize: 100,
+          fields: 'nextPageToken, files(id, name)',
+          q: "(mimeType='image/jpeg' or mimeType='image/png' or mimeType='application/json') and trashed = false",
+          pageToken: nextPageToken
+      });
+
+      const files = response.data.files;
+      nextPageToken = response.data.nextPageToken;
+
+      // Delete fetched files
+      for (const file of files) {
+          await drive.files.delete({
+              fileId: file.id
+          });
+          console.log(`Deleted file: ${file.name} (${file.id})`);
+      }
+  } while (nextPageToken);
+}
+
+app.delete('/api/delete-all-files', async (req, res) => {
+  try {
+      await deleteAllFiles(auth); // Ensure `auth` is correctly initialized
+      res.send('All files have been deleted.');
+  } catch (error) {
+      console.error('Failed to delete files:', error);
+      res.status(500).send('Error deleting files.');
+  }
+});
+

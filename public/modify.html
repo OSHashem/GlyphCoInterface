@@ -40,6 +40,20 @@
         <!-- <canvas id="redraw" width="800" height="600"></canvas> -->
     </div>
 
+    <button id="deleteAllFilesBtn">Delete All Files</button>
+<!-- <script>
+document.getElementById('deleteAllFilesBtn').addEventListener('click', async () => {
+    if (confirm('Are you sure you want to delete all files? This action cannot be undone.')) {
+        const response = await fetch('/api/delete-all-files', { method: 'DELETE' });
+        if (response.ok) {
+            alert('All files have been deleted.');
+        } else {
+            alert('Failed to delete files.');
+        }
+    }
+});
+</script> -->
+
     <!-- <script>
         async function fetchFiles() {
             try {
