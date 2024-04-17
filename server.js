@@ -63,20 +63,26 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
 
 // Route for upload
 app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' }]), async (req, res) => {
-  const jsonFile = req.files['jsonFile'][0]; // Access the JSON file
-  const pngFile = req.files['pngFile'][0]; // Access the PNG file
-  const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Your predefined parent folder ID
+  const folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar
   const word = req.body.word; // The associated word
-
+  
   try {
-      // Find or create folder for the word
-      let folder = await findOrCreateFolder(word, folderId);
+    // Find or create folder for the word
+    let folder = await findOrCreateFolder(word, folderId);
 
-      // Upload JSON file to the created or found folder
-      await uploadFileToGoogleDrive(jsonFile.originalname, jsonFile.mimetype, jsonFile.buffer, folder);
+    const { pngFileName, jsonFileName } = await createUniqueFilenamesForNewFiles(word, auth);
+
+    const jsonFile = req.files['jsonFile'][0]; // Access the JSON file
+    const pngFile = req.files['pngFile'][0]; // Access the PNG file
+     
+    // Upload JSON file to the created or found folder
+      await uploadFileToGoogleDrive(jsonFileName, jsonFile.mimetype, jsonFile.buffer, folder);
       
       // Upload PNG file to the same folder
-      await uploadFileToGoogleDrive(pngFile.originalname, pngFile.mimetype, pngFile.buffer, folder);
+      await uploadFileToGoogleDrive(pngFileName, pngFile.mimetype, pngFile.buffer, folder);
+
+      jsonFile.originalname = jsonFileName;
+      pngFile.originalname = pngFileName;
 
       res.status(200).send('Files uploaded successfully to Google Drive.');
   } catch (error) {
@@ -88,7 +94,7 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
 
 app.post('/create-folder', upload.none(), async (req, res)  => {
   
-  const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Replace this with the ID of the parent folder
+  const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar
   
   const nameOfFolder   = req.body.nameOfFolder;
   console.log(nameOfFolder)
@@ -161,8 +167,9 @@ async function listFiles(auth) {
   
   do {
     const response = await drive.files.list({
-      pageSize: 300, // Increase the page size if needed
-      fields: 'nextPageToken, files(*)',
+      pageSize: 300,
+      fields: 'nextPageToken, files(id, name, mimeType, thumbnailLink, webViewLink, webContentLink)',
+      q: `(mimeType='image/jpeg' or mimeType='image/png') and trashed = false`,
       pageToken: nextPageToken
     });
 
@@ -196,3 +203,38 @@ app.use(express.static('public'));
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
+
+
+//////////////////////////////////////////////////////////////
+
+function categorizeAndDetermineNextNumber(files) {
+  const highestNumbers = {};
+
+  files.forEach(file => {
+      const match = file.name.match(/^(.*?)(\d+)(?:\.[^.]*)$/);
+      if (match) {
+          const baseWord = match[1];
+          const number = parseInt(match[2], 10);
+          console.log(number)
+
+          if (!highestNumbers[baseWord] || number > highestNumbers[baseWord]) {
+              highestNumbers[baseWord] = number;
+          }
+      }
+  });
+
+  return highestNumbers;
+}
+
+
+async function createUniqueFilenamesForNewFiles(baseWord, auth) {
+  const files = await listFiles(auth); // Fetch existing files
+  const highestNumbers = categorizeAndDetermineNextNumber(files);
+
+  const nextNumber = highestNumbers[baseWord] ? highestNumbers[baseWord] + 1 : 1;
+
+  const pngFileName = `${baseWord}${nextNumber}.png`;
+  const jsonFileName = `${baseWord}${nextNumber}.json`;
+
+  return { pngFileName, jsonFileName };
+}

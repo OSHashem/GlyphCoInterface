@@ -50,13 +50,13 @@ toolbar.addEventListener('click', async e => {
             //saving the array as a JSON file
             word = [[wordToWrite.innerHTML], [startingTime], word];
             const data = JSON.stringify(word);
-            const jsonFileName = wordToWrite.innerHTML + startingTime + '.json';
+            const jsonFileName = wordToWrite.innerHTML  + '.json';
             const jsonFile = new File([data], encodeURIComponent(jsonFileName), { type: 'application/json' });
             
             //saving the drawing as a PNG file
             const newCanvas = trimCanvas(canvas);
             newCanvas.toBlob(async function (blob) {
-                const pngFileName = wordToWrite.innerHTML + startingTime + '.png';
+                const pngFileName = wordToWrite.innerHTML  + '.png';
                 const pngFile = new File([blob], encodeURIComponent(pngFileName), { type: 'image/png' });
                 // await sendBlobToServer(pngFile);
                 await sendBlobToServer(jsonFile,pngFile);
@@ -212,8 +212,6 @@ function generateWord() {
         wordToWrite.innerHTML = randomWord;
         displayImage(randomWord); // Ensure this line is here
 
-    
-
     });
 }
 
@@ -283,17 +281,6 @@ async function sendBlobToServer(jsonFile,pngFile) {
         console.error('Error sending file to server:', error.message);
     }
 }
-
-
-//////////////////////////////////////////////////////////////////////////////
-
-// Event listener for the "Modify" button
-document.getElementById('modifyBtn').addEventListener('click', () => {
-    // Redirect the user to a new page when the "Modify" button is clicked
-    window.location.href = '/modify.html';
-});
-
-//////////////////////////////////////////////////////////////////////////////
 
 //trim canvas function to minimize image size, written by https://github.com/remy, modified to center instead of trimming
 function trimCanvas(c) {
@@ -368,3 +355,8 @@ function trimCanvas(c) {
     // Return centered canvas
     return centeredCanvas;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////////////
