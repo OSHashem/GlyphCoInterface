@@ -20,25 +20,23 @@
             <img src="Pictures/pencil_11761763.png" alt="Navbar Image" style="height: 20px; width: 20px;">Modify Data</a>
             
         </nav>
-        <div style="text-align:center;margin:20px 0;">
+        <!-- <div style="text-align:center;margin:20px 0;">
             <h2>This page is currently under construction.</h2>
             <p>
                 We appreciate your patience as we continue to improve the site!
-                <!-- Add the new link to the home page below -->
                 <a href="index.html" style="margin-left: 10px; text-decoration: none;">Click here for home page</a>
             </p>
-        </div>
+        </div> -->
         
-        <h2 style="color: #B58440;">Submitted drawings</h2>
+        <h1 style="color: #B58440; text-align: center;">Submitted drawings</h2>
         <div id="fileList"></div>
-        <style>
-        #redraw {
-          border: 1px solid black;
-        }
-      </style>
-    <div>
-        <!-- <canvas id="redraw" width="800" height="600"></canvas> -->
-    </div>
+        
+
+&nbsp&nbsp Choose a folder: 
+<select id="folderSelect">
+</select>
+
+<div id="fileDisplayArea"></div>
 
     <!-- <button id="deleteAllFilesBtn">Delete All Files</button>
 <script>
@@ -54,43 +52,96 @@ document.getElementById('deleteAllFilesBtn').addEventListener('click', async () 
 });
 </script> -->
 
-    <!-- <script>
+    <script>
         async function fetchFiles() {
-            try {
-                const response = await fetch('/api/files');
-                const files = await response.json();
-                processList(files);
-            } catch (error) {
-                console.error('Error fetching files:', error);
-            }
-        }
+    try {
+        const response = await fetch('/api/files');
+        const folders = await response.json(); // Expecting an object grouped by folders
+        // displayFoldersWithFiles(folders);
+        populateFolderDropdown(folders);
 
-        function processList(files) {
-            console.log('Processing....');
-            const fileListContainer = document.getElementById('fileList');
-            files.forEach(file => {
-                // Create a new div element for each submitted drawing
-                const drawingDiv = document.createElement('div');
-                drawingDiv.classList.add('drawing-item');
+    } catch (error) {
+        console.error('Error fetching files:', error);
+    }
+}
 
-                // Create an anchor tag and image element
-      const anchor = document.createElement('a')
-      anchor.href = 'edit.html'
-      anchor.target = '_blank' // Open the link in a new tab
-      const image = document.createElement('img')
-      image.src = file.thumbnailLink // Assuming thumbnailLink contains the URL of the thumbnail
+// Add file names in drop down list
+function populateFolderDropdown(folders) {
+    const folderSelect = document.getElementById('folderSelect');
+    Object.keys(folders).forEach(folderName => {
+        const option = document.createElement('option');
+        option.value = folderName;
+        option.textContent = folderName;
+        folderSelect.appendChild(option);
+    });
 
-      // Append the image to the anchor tag
-      anchor.appendChild(image)
-                // Append the image to the drawing div
-                drawingDiv.appendChild(image);
+    // Add event listener for selection changes
+    folderSelect.addEventListener('change', function() {
+        displayFilesForFolder(folders, this.value);
+    });
+}
 
-                // Append the drawing div to the file list container
-                fileListContainer.appendChild(drawingDiv);
-            });
-        }
+// Display files related to each folder
+function displayFoldersWithFiles(folders) {
+    const fileListContainer = document.getElementById('fileList');
+    Object.entries(folders).forEach(([folderName, files]) => {
+        // Create a section for each folder
+        const folderSection = document.createElement('div');
+        folderSection.classList.add('folder-section');
 
-        fetchFiles();
-    </script> -->
+        // Optional: Add a folder name header
+        const folderHeader = document.createElement('h3');
+        folderHeader.textContent = folderName;
+        folderSection.appendChild(folderHeader);
+
+        // Display files within this folder
+        files.forEach(file => {
+            const anchor = document.createElement('a');
+            anchor.href = 'edit.html'; // Customize as needed
+            anchor.target = '_blank';
+            
+            const image = document.createElement('img');
+            image.src = file.thumbnailLink; // Assuming this structure
+            image.alt = `Image from ${folderName}`;
+            
+            anchor.appendChild(image);
+            folderSection.appendChild(anchor);
+        });
+
+        // Append the folder section to the main container
+        fileListContainer.appendChild(folderSection);
+    });
+}
+
+// Updat the display area with files from the selected folder
+function displayFilesForFolder(folders, selectedFolderName) {
+    const fileDisplayArea = document.getElementById('fileDisplayArea');
+    fileDisplayArea.innerHTML = ''; // Clear previous content
+
+    const files = folders[selectedFolderName];
+    if (files) {
+        files.forEach(file => {
+            const anchor = document.createElement('a');
+            anchor.href = file.webViewLink || file.webContentLink; // Use the direct link
+            anchor.target = '_blank'; // Open in a new tab
+
+            const image = document.createElement('img');
+            image.src = file.thumbnailLink;
+            image.alt = "Sample Image";
+            image.style.width = "100px"; // Adjust as needed
+            image.style.height = "100px"; // Adjust as needed
+
+            anchor.appendChild(image);
+            fileDisplayArea.appendChild(anchor);
+        });
+    } else {
+        fileDisplayArea.textContent = 'No files in this folder.';
+    }
+}
+
+
+
+fetchFiles();
+    </script>
 </body>
 </html>
