@@ -119,7 +119,10 @@ const words = [
     { word: 'obelisk', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/obelisk.jpg' },
     { word: 'The-Ankh', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/The-Ankh.jpg' },
     { word: 'karnaktemple', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/305c0c25727d4fd6354b58ae1e4f2ee528e374bc/public/Samples/karnaktemple.jpg' },
-    
+    { word: 'Amenhotep III', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/64f4669f116f27bf386c8c72954447421ed26d7d/public/Samples/Amenhotep%20III.jpeg' },
+    { word: 'Pyramid', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/64f4669f116f27bf386c8c72954447421ed26d7d/public/Samples/Pyramid.jpeg' },
+    { word: 'bicycle', imageUrl: 'https://raw.githubusercontent.com/OSHashem/GlyphCoInterface/64f4669f116f27bf386c8c72954447421ed26d7d/public/Samples/bicycle.jpg' },
+
     // Add more words and image URLs here
 ];
 
