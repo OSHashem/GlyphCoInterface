@@ -161,7 +161,7 @@ async function listFiles(auth) {
     const response = await drive.files.list({ // method is used to list the files in the drive
       pageSize: 300,
       fields: 'nextPageToken, files(id, name, mimeType, parents, thumbnailLink, webViewLink, webContentLink)',
-      q: `mimeType='image/png' and trashed = false`, // filter files to shown/displayed
+      q: `mimeType='image/jpeg' or mimeType='image/png' or mimeType='image/jpg' and trashed = false`, // filter files to shown/displayed
       pageToken: nextPageToken
     });
 
