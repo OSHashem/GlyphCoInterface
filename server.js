@@ -68,13 +68,13 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
   {
     // Fares : 1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c
     // Test : 1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD
-    folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar, folder ID for the folder that will contain the uploaded files
+    folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // Omar, folder ID for the folder that will contain the uploaded files
   }
   else if(number == 2)
   {
     // Monika : 1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3
     // test 1 : 1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw
-    folderId = '1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw' // Omar 2
+    folderId = '1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3' // Omar 2
   }
   // Find or create a folder for the word/symbol
 
