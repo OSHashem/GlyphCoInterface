@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="height=device-height, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Home</title>
+        <title>Translate</title>
         <link rel="stylesheet" href="style.css">
         <link rel="icon" href="Pictures/what-is-the-eye-of-horus-jewelry.webp">
     </head>
@@ -16,33 +16,36 @@
         </a>
         
         <a  class="navbar-link"  href="modify.html">
-            <img src="Pictures/pencil_11761763.png" alt="Navbar Image" style="height: 20px; width: 20px;">Data
-        </a> 
-
+            <img src="Pictures/pencil_11761763.png" alt="Navbar Image" style="height: 20px; width: 20px;">Data</a> 
+            
         <a href="translation.html" class="navbar-link">
             <img src="Pictures/hieroglyph_1422697.png" alt="Navbar Image" style="height: 20px; width: 20px;" >Translate
         </a>
-            
         </nav>
+        
+        <div style="text-align:center;margin:20px 0;">
+            <h2>This page is currently under construction.</h2>
+            <p>
+                We appreciate your patience as we continue to improve the site!
+                <a href="index.html" style="margin-left: 10px; text-decoration: none;">Click here for home page</a>
+            </p>
+        </div>
+
         <div id="container">
             <div id="toolbar">
-                <button class="button" id="saveWordBtn" data-origin="drawing">Submit</button>
+                <!-- <button class="button" id="saveWordBtn"  data-origin="translate">Submit</button> -->
                 <button class="button" id="clearBtn">Clear</button>
-                <p>Please Draw:</p> 
-                <p id="wordToWrite"></p>
-                <button class="button" id="newWordBtn">New Drawing</button>
-                <!-- <input type="text" id="customWord" placeholder="Custom"> -->
-                <!-- <button class="setWordBtn" id="setWordBtn">Set</button> -->
-                <!-- <button class="button"  id="modifyBtn">Modify Data</button> -->
+                <!-- <p>Please enter your name in the text box below </p>  -->
+                <p  id="wordToWrite">Please Type Your Name Below </p>
+                <!-- <button class="button" id="newWordBtn">New Drawing</button> -->
+                <input type="text" id="customWord" placeholder="Custom">
+                <button class="setWordBtn" id="setWordBtn">Set</button>
             </div>
             
-            <div style="display: flex; justify-content: space-between;">
-                <canvas id="drawingBoard" width="500" height="500"></canvas>
-                <div id="imageContainer">
-                </div>
-            </div>        
+                <!-- <canvas id="drawingBoard" width="500" height="500"></canvas> -->
     </div>
 
+    
     <script type="module" src="client.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

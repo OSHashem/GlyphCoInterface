@@ -13,8 +13,10 @@ let currentStroke = [];
 let word = [];
 let startingTime;
 
-//on window load, generates a random word using the helper function below
-window.onload = function () {
+var pathname = window.location.pathname;
+// console.log(pathname);
+
+if ((pathname ==='/') || pathname.includes('index.html') ) {
     generateWord();
 }
 
@@ -30,6 +32,8 @@ canvas.addEventListener('touchend', handleDrawingEnd);
 //event listeners for the toolbar buttons
 toolbar.addEventListener('click', async e => {
     if (e.target.id === 'saveWordBtn') {
+        const origin = e.target.getAttribute('data-origin')
+        let number;
         if (word.length == 0) {
             Swal.fire({
                 icon: 'warning',
@@ -38,6 +42,17 @@ toolbar.addEventListener('click', async e => {
             });
             return;
         } else {
+            // Adjust behavior based on the origin
+            if (origin === 'drawing') {
+                number = 1;
+                // console.log('Button clicked on Index');
+                // console.log(number);
+
+            } else if (origin === 'translate') {
+                number = 2;
+                // console.log('Button clicked on Translation');
+                // console.log(number)
+            }
             //sets initial drawing time to 0, updates the rest of the array
             startingTime = word[0][0][2];
             for (let i = 0; i < word.length; i++) {
@@ -59,9 +74,9 @@ toolbar.addEventListener('click', async e => {
                 const pngFileName = wordToWrite.innerHTML  + '.png';
                 const pngFile = new File([blob], encodeURIComponent(pngFileName), { type: 'image/png' });
                 // await sendBlobToServer(pngFile);
-                await sendBlobToServer(jsonFile,pngFile);
+                await sendBlobToServer(jsonFile,pngFile,number);
 
-                Swal.fire('Success!', 'Word Submitted', 'success');
+                Swal.fire('Success!', 'Successful Submission', 'success');
             });
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -192,7 +207,7 @@ function generateWord() {
         const wordArray = JSON.parse(jsonData);
         const randomWord = wordArray[Math.floor(Math.random() * wordArray.length)];
         wordToWrite.innerHTML = randomWord;
-        displayImage(randomWord); // Ensure this line is here
+        displayImage(randomWord); // Display an image for the current word
 
     });
 }
@@ -234,7 +249,7 @@ const dot = (e) => {
 
 //sends a file to the server (server.js) to be uploaded
 // Updated function to send file to server
-async function sendBlobToServer(jsonFile,pngFile) {
+async function sendBlobToServer(jsonFile,pngFile,number) {
     try {
         const formData = new FormData();
         formData.append('jsonFile', jsonFile);
@@ -244,10 +259,9 @@ async function sendBlobToServer(jsonFile,pngFile) {
         const wordToWriteParagraph = document.getElementById('wordToWrite');
         const word = wordToWriteParagraph.textContent.trim();
 
-        
-
         // Append the word to the FormData
         formData.append('word', word);
+        formData.append('number',number)
 
         const response = await fetch('/upload-file', {
             method: 'POST',

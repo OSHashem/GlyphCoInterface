@@ -20,6 +20,7 @@ app.use(express.json());
 const serviceAccountKey = require('./secret/inspired-shell-417401-a25f25878ef3.json');
 const { file } = require('googleapis/build/src/apis/file');
 
+
 const auth = new google.auth.GoogleAuth({
   credentials: serviceAccountKey,
   scopes: 'https://www.googleapis.com/auth/drive',
@@ -57,9 +58,26 @@ async function uploadFileToGoogleDrive(fileName, mimeType, fileBuffer, folderId)
 // Route for upload
 app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' }]), async (req, res) => {
 
-  const folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // Fares, folder ID for the folder that will contain the uploaded files
+  let folderId ;
+
   const word = req.body.word; // The word/symobl that is being uploaded
-  
+  const number = req.body.number;
+  console.log(number);
+
+  if(number == 1)
+  {
+    // Fares : 1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c
+    // Test : 1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD
+    folderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar, folder ID for the folder that will contain the uploaded files
+  }
+  else if(number == 2)
+  {
+    // Monika : 1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3
+    // test 1 : 1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw
+    folderId = '1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw' // Omar 2
+  }
+  // Find or create a folder for the word/symbol
+
   try {
     let folder = await findOrCreateFolder(word, folderId);
 
@@ -134,7 +152,7 @@ async function findOrCreateFolder(folderName, parentFolderId) {
       fields: 'files(id)',
     });
     
-console.log(response.data.files.length)
+// console.log(response.data.files.length)
     if (response.data.files.length > 0) {
       // Folder already exists, return its ID
       console.log(response.data.files[0].id)
@@ -161,7 +179,7 @@ async function listFiles(auth) {
     const response = await drive.files.list({ // method is used to list the files in the drive
       pageSize: 300,
       fields: 'nextPageToken, files(id, name, mimeType, parents, thumbnailLink, webViewLink, webContentLink)',
-      q: `mimeType='image/jpeg' or mimeType='image/png' or mimeType='image/jpg' and trashed = false`, // filter files to shown/displayed
+      q: `(mimeType='image/jpeg' or mimeType='image/png' or mimeType='image/jpg') and trashed = false`, // filter files to shown/displayed
       pageToken: nextPageToken
     });
 
@@ -262,6 +280,109 @@ async function createUniqueFilenamesForNewFiles(baseWord, auth) {
   
   return { pngFileName, jsonFileName };
 }
+
+async function fetchAndProcessJsonFiles(auth) {
+  try {
+    var service = google.drive({
+      version: 'v3', 
+      encoding: null
+    });
+      // List JSON files
+      const fileListResponse = await service.files.list({
+        auth: auth,
+          q: "mimeType='application/json' and trashed=false",
+          fields: 'files(id, name)',
+          pageSize: 10,
+      });
+
+      const files = fileListResponse.data.files;
+      if (files.length === 0) {
+          console.log('No JSON files found.');
+          return;
+      }
+
+      // Process each JSON file
+      for (const file of files) {
+          // console.log(`Fetching content for file: ${file.name} (ID: ${file.id})`);
+
+          // Fetch and read JSON file content
+          const fileContentResponse = await drive.files.get({
+              fileId: file.id,
+              alt: 'media',
+          }, {
+              responseType: 'json',
+          });
+
+          const jsonContent = fileContentResponse.data;
+          // The jsonContent is an array i want to loop and print all the elements in this array
+          // console.log(jsonContent);
+          // const jsonArray = JSON.parse(jsonContent)
+          // const jsonArray2 =jsonArray.slice(2)
+          // for (const element of jsonContent) {
+            // const array = JSON.parse(element)
+            // console.log(array);
+          // }
+          // const jsonArray = JSON.stringify(jsonContent)
+          // const xPos = JSON.parse(jsonContent)
+          // const xPos = jsonContent[2]
+          const yPos = jsonContent[2][0][0][1]; // Specific nested structure access
+
+          // console.log(xPos);
+            // console.log(yPos);
+
+          // console.log(`Content for ${file.name}:`, jsonContent);
+
+          // Here, you can process the JSON content as needed
+          // For example, store it in a database, or perform data analysis
+      }
+  } catch (error) {
+      console.error('Error fetching JSON files:', error.message);
+  }
+}
+
+app.get('/api/process-json-files', async (req, res) => {
+  const drive = google.drive({version: 'v3', auth: await auth.getClient()});
+  try {
+      // List JSON files
+      const fileListResponse = await drive.files.list({
+          q: "mimeType='application/json' and trashed=false",
+          fields: 'files(id, name)',
+          pageSize: 10,
+      });
+
+      const files = fileListResponse.data.files;
+      if (files.length === 0) {
+          return res.status(404).send('No JSON files found.');
+      }
+
+      let fileContents = []; // To store contents of each JSON file
+      for (const file of files) {
+          // Fetch and read JSON file content
+          const fileContentResponse = await drive.files.get({
+              fileId: file.id,
+              alt: 'media',
+          }, {
+              responseType: 'json',
+          });
+
+          // Assuming jsonContent is an array and we want to print all its elements
+          const jsonContent = fileContentResponse.data;
+          fileContents.push({
+              fileName: file.name,
+              content: jsonContent, // Directly using the fetched JSON content
+          });
+      }
+
+      res.json(fileContents); // Send the contents of all fetched JSON files in the response
+  } catch (error) {
+      console.error('Error processing JSON files:', error.message);
+      res.status(500).send('Failed to process JSON files');
+  }
+});
+
+// Make sure to call the method
+fetchAndProcessJsonFiles(auth);
+
 
 ///////////////////////////////////////////////////////////////////////
 //// DANGER ZONE !!!
