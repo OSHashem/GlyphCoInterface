@@ -64,7 +64,7 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
 
   let folderId ;
 
-  const word = req.body.word; // The word/symobl that is being uploaded
+  let word; // The word/symobl that is being uploaded
   const number = req.body.number;
   // console.log(number);
 
@@ -72,12 +72,16 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
   {
     // Fares : 1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c
     // Test : 1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD
+    word = req.body.word;
+    console.log(word);
     folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // folder ID for the folder that will contain the uploaded files
   }
   else if(number == 2)
   {
     // Monika : 1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3
     // test 1 : 1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw
+    word = req.body.word.toLowerCase();
+    console.log(word);
     folderId = '1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3' // Omar 2
   }
   // Find or create a folder for the word/symbol

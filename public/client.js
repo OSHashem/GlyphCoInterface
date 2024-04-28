@@ -260,7 +260,7 @@ async function sendBlobToServer(jsonFile,pngFile,number) {
 
         // Retrieve the word to write
         const wordToWriteParagraph = document.getElementById('wordToWrite');
-        const word = wordToWriteParagraph.textContent.trim().toLowerCase();
+        const word = wordToWriteParagraph.textContent.trim();
 
         // Append the word to the FormData
         formData.append('word', word);
