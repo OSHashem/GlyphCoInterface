@@ -16,9 +16,10 @@ let startingTime;
 var pathname = window.location.pathname;
 // console.log(pathname);
 
-if ((pathname ==='/') || pathname.includes('index.html') ) {
+if ((pathname ==='/') || pathname.includes('index.html') || pathname.includes('Evaluate.html') ) {
     generateWord();
 }
+
 
 //event listeners for mouse and touch (do NOT update to pointer events)
 canvas.addEventListener('mousedown', handleWritingStart);
@@ -95,10 +96,12 @@ toolbar.addEventListener('click', async e => {
     
     if (e.target.id === 'setWordBtn') {
         const text = customWord.value;
-        // console.log(text)
+        const name = text.toLowerCase();
+        // console.log(name)
+        translateName(name)
         if (text != "") {
             wordToWrite.innerHTML = text;
-            displayImage(text); // Ensure this line is here to display the image for the custom word
+            // displayImage(text); // Ensure this line is here to display the image for the custom word
         }
         customWord.value = "";
     }
@@ -257,7 +260,7 @@ async function sendBlobToServer(jsonFile,pngFile,number) {
 
         // Retrieve the word to write
         const wordToWriteParagraph = document.getElementById('wordToWrite');
-        const word = wordToWriteParagraph.textContent.trim();
+        const word = wordToWriteParagraph.textContent.trim().toLowerCase();
 
         // Append the word to the FormData
         formData.append('word', word);
@@ -373,3 +376,55 @@ async function fetchFiles(word) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
+
+function translateName(name){
+    const imageUrls = Array.from(name).map(char => `letters/${char}.png`);
+    concatenateImages(imageUrls);
+}
+
+// Load an image from a URL
+function loadImage(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = url;
+    });
+}
+
+// Concatenate a list of images horizontally
+async function concatenateImages(imageUrls) {
+    let images = await Promise.all(imageUrls.map(url => loadImage(url)));
+    const imgHeight = 90;
+    const imgWidth = 90;
+
+        // Resize each image to be the same height
+        images = images.map(img => {
+            const ratio = img.width / img.height;
+            return {
+                img: img,
+                width: imgWidth ,
+                height: imgHeight // New height is the target height
+            };
+        });
+    
+        const canvas2 = document.getElementById('canvas2');
+        const ctx2 = canvas2.getContext('2d');
+        
+    // Calculate total width
+    // const totalWidth = images.reduce((acc, img) => acc + img.width, 0);
+    const totalWidth = images.length*imgWidth;
+
+    // Set canvas size
+    canvas2.width = totalWidth;
+    canvas2.height = imgHeight;
+
+    // Draw each image onto the canvas at the correct offset
+    let xOffset = 0;
+    images.forEach(({ img, width, height }) => {
+        ctx2.drawImage(img, xOffset, 0, width, height); // Draw and resize image simultaneously
+        xOffset += width; // Move the x offset for the next image
+    });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="height=device-height, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Translate</title>
+        <title>Evaluate</title>
         <link rel="stylesheet" href="style.css">
         <link rel="icon" href="Pictures/what-is-the-eye-of-horus-jewelry.webp">
     </head>
@@ -30,32 +30,44 @@
             </ul>
                  
              </nav>
-        
-        <!-- <div style="text-align:center;margin:20px 0;">
+
+             <div style="text-align:center;margin:20px 0;">
             <h2>This page is currently under construction.</h2>
             <p>
                 We appreciate your patience as we continue to improve the site!
                 <a href="index.html" style="margin-left: 10px; text-decoration: none;">Click here for home page</a>
             </p>
-        </div> -->
+        </div>
 
         <div id="container">
             <div id="toolbar">
-                <button class="button" id="saveWordBtn"  data-origin="translate">Submit</button>
+                <!-- <button class="button" id="saveWordBtn" data-origin="drawing">Submit</button> -->
+                <button class="button">Evaluate</button>
                 <button class="button" id="clearBtn">Clear</button>
-                <!-- <p>Please enter your name in the text box below </p>  -->
-                <p  id="wordToWrite">Please Type Your Name Below </p>
-                <!-- <button class="button" id="newWordBtn">New Drawing</button> -->
-                <input type="text" id="customWord" placeholder="English Only">
-                <button class="setWordBtn" id="setWordBtn">Set</button>
+                <p>Please Draw:</p> 
+                <p id="wordToWrite"></p>
+                <button class="button" id="newWordBtn">New Drawing</button>
+                <!-- <input type="text" id="customWord" placeholder="Custom"> -->
+                <!-- <button class="setWordBtn" id="setWordBtn">Set</button> -->
+                <!-- <button class="button"  id="modifyBtn">Modify Data</button> -->
             </div>
+            
             <div style="display: flex; justify-content: space-between;">
-                <canvas id="drawingBoard" width="900px" height="450px"></canvas>
-            </div>           
-            <canvas id="canvas2" style="margin-top: 20px;" ></canvas>             
-        </div>
+                <canvas id="drawingBoard" width="500" height="500"></canvas>
+                <!-- <div id="imageContainer"> -->
+                    <!-- </div> -->
+                        <div id="=toolbar">
+                            <div class="toolbar" style="margin-top: 40px; margin-right: 40px;">
+                                <!-- <p class="label-description">You drew: bla</p> 
+                                <button class="button">Yes</button>
+                                <button class="button">No</button> -->
+                            </div>
+                            
+                    </div>
 
-    
+            </div>        
+    </div>
+
     <script type="module" src="client.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

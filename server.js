@@ -7,6 +7,9 @@ const express = require('express');
 const app = express();
 const upload = multer();
 const port = 3000;
+// python
+
+//
 require('dotenv').config();
 app.use(express.json());
 
@@ -19,6 +22,7 @@ app.use(express.json());
 
 const serviceAccountKey = require('./secret/inspired-shell-417401-a25f25878ef3.json');
 const { file } = require('googleapis/build/src/apis/file');
+const { json } = require('body-parser');
 
 
 const auth = new google.auth.GoogleAuth({
@@ -62,13 +66,13 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
 
   const word = req.body.word; // The word/symobl that is being uploaded
   const number = req.body.number;
-  console.log(number);
+  // console.log(number);
 
   if(number == 1)
   {
     // Fares : 1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c
     // Test : 1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD
-    folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // Omar, folder ID for the folder that will contain the uploaded files
+    folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // folder ID for the folder that will contain the uploaded files
   }
   else if(number == 2)
   {
