@@ -12,6 +12,7 @@ let isDrawing = false;
 let currentStroke = [];
 let word = [];
 let startingTime;
+let currentIndex = 0;
 
 var pathname = window.location.pathname;
 // console.log(pathname);
@@ -213,9 +214,13 @@ function generateWord() {
     const promise = readFile('drawings.json');
     promise.then(async function (jsonData) {
         const wordArray = JSON.parse(jsonData);
-        const randomWord = wordArray[Math.floor(Math.random() * wordArray.length)];
-        wordToWrite.innerHTML = randomWord;
-        displayImage(randomWord); // Display an image for the current word
+        if (currentIndex >= wordArray.length) {
+            currentIndex = 0; // Reset index if it exceeds the length
+        }
+        const nextWord = wordArray[currentIndex];
+        wordToWrite.innerHTML = nextWord;
+        displayImage(nextWord); // Display an image for the current word
+        currentIndex++;  // Display an image for the current word
 
     });
 }
