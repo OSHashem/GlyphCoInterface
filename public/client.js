@@ -54,6 +54,11 @@ toolbar.addEventListener('click', async e => {
                 // console.log('Button clicked on Translation');
                 // console.log(number)
             }
+            else if (origin === 'evaluate'){
+                number = 3;
+                // console.log('Button clicked on Evaluation');
+                // console.log(number)
+            }
             //sets initial drawing time to 0, updates the rest of the array
             startingTime = word[0][0][2];
             for (let i = 0; i < word.length; i++) {

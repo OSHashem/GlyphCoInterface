@@ -70,11 +70,11 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
 
   if(number == 1)
   {
-    // Fares : 1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c
+    // Fares : 177Id33-zcbO7Z7XuWpgBZX54IZ68svXY
     // Test : 1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD
     word = req.body.word;
     console.log(word);
-    folderId = '1V4W2uGdRCKMi377ox4XUOGZ4jsFzbN9c'; // folder ID for the folder that will contain the uploaded files
+    folderId = '177Id33-zcbO7Z7XuWpgBZX54IZ68svXY'; // folder ID for the folder that will contain the uploaded files
   }
   else if(number == 2)
   {
@@ -82,8 +82,16 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
     // test 1 : 1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw
     word = req.body.word.toLowerCase();
     console.log(word);
-    folderId = '1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3' // Omar 2
+    folderId = '1UhJs5R9qwB03iuPrXvRMXDbrzcZjRww3'
   }
+  else if(number == 3)
+    {
+    // Fares (Testing) : 1Lh4qc9UjianuwWJNLMPg_jslbxV5ZU9J
+    // test 1 : 1SAS2GMp9DCdCC5-H4BRFwWdaBjwiPVhw
+    word = req.body.word;
+    console.log(word);
+      folderId = '1Lh4qc9UjianuwWJNLMPg_jslbxV5ZU9J' 
+    }
   // Find or create a folder for the word/symbol
 
   try {
