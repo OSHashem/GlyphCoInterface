@@ -97,7 +97,9 @@ toolbar.addEventListener('click', async e => {
 
     if (e.target.id === 'newWordBtn') {
         generateWord();
-        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        word = []; 
+
     }
     
     if (e.target.id === 'setWordBtn') {
