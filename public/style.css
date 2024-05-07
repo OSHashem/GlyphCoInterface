@@ -8,7 +8,7 @@ html, body {
 #container {
     margin: 0;
     padding: 0;
-    height: 89.5%;
+    height: 90%;
     width:auto;
     background-color: #0d1117;
 }
@@ -91,7 +91,7 @@ p{
 }
 
 nav {
-    background-color: #806143; /* Set background color */
+    background-color: #BA9063; /* Set background color */
     padding: 25px 0; /* Increase vertical padding */
 }
 
@@ -113,10 +113,10 @@ nav ul li a {
 }
 
 .navbar-link {
-    color: navy;
+    color: maroon;
     text-decoration: none;
     margin-left: 100px; /* Add right margin for space between links */
-
+    font-weight: 600;
 }
 
 .ulList {

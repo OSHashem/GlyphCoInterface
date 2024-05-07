@@ -194,7 +194,7 @@ async function listFiles(auth) {
   do {
     const response = await drive.files.list({ // method is used to list the files in the drive
       pageSize: 300,
-      fields: 'nextPageToken, files(id, name, mimeType, parents, thumbnailLink, webViewLink, webContentLink)',
+      fields: 'nextPageToken, files(id, name, mimeType, parents, thumbnailLink, webViewLink, webContentLink, modifiedTime)',
       q: `(mimeType='image/jpeg' or mimeType='image/png' or mimeType='image/jpg') and trashed = false`, // filter files to shown/displayed
       pageToken: nextPageToken
     });
@@ -250,7 +250,8 @@ app.get('/api/files', async (req, res) => {
           response[folderName] = groupedFiles[folderId].map(file => ({
               id: file.id,
               name: file.name,
-              thumbnailLink: file.thumbnailLink // Add other properties as needed
+              thumbnailLink: file.thumbnailLink,
+              modifiedTime: file.modifiedTime // Add other properties as needed
           }));
       });
 
@@ -307,7 +308,7 @@ async function fetchAndProcessJsonFiles(auth) {
       const fileListResponse = await service.files.list({
         auth: auth,
           q: "mimeType='application/json' and trashed=false",
-          fields: 'files(id, name)',
+          fields: 'files(id, name, modifiedTime)',
           pageSize: 10,
       });
 
@@ -319,7 +320,7 @@ async function fetchAndProcessJsonFiles(auth) {
 
       // Process each JSON file
       for (const file of files) {
-          // console.log(`Fetching content for file: ${file.name} (ID: ${file.id})`);
+          // console.log(`Fetching content for file: ${file.name} (ID: ${file.id}) (Date: ${file.modifiedTime})`);
 
           // Fetch and read JSON file content
           const fileContentResponse = await drive.files.get({
@@ -356,45 +357,45 @@ async function fetchAndProcessJsonFiles(auth) {
   }
 }
 
-app.get('/api/process-json-files', async (req, res) => {
-  const drive = google.drive({version: 'v3', auth: await auth.getClient()});
-  try {
-      // List JSON files
-      const fileListResponse = await drive.files.list({
-          q: "mimeType='application/json' and trashed=false",
-          fields: 'files(id, name)',
-          pageSize: 10,
-      });
+// app.get('/api/process-json-files', async (req, res) => {
+//   const drive = google.drive({version: 'v3', auth: await auth.getClient()});
+//   try {
+//       // List JSON files
+//       const fileListResponse = await drive.files.list({
+//           q: "mimeType='application/json' and trashed=false",
+//           fields: 'files(id, name, modifiedTime)',
+//           pageSize: 10,
+//       });
 
-      const files = fileListResponse.data.files;
-      if (files.length === 0) {
-          return res.status(404).send('No JSON files found.');
-      }
+//       const files = fileListResponse.data.files;
+//       if (files.length === 0) {
+//           return res.status(404).send('No JSON files found.');
+//       }
 
-      let fileContents = []; // To store contents of each JSON file
-      for (const file of files) {
-          // Fetch and read JSON file content
-          const fileContentResponse = await drive.files.get({
-              fileId: file.id,
-              alt: 'media',
-          }, {
-              responseType: 'json',
-          });
+//       let fileContents = []; // To store contents of each JSON file
+//       for (const file of files) {
+//           // Fetch and read JSON file content
+//           const fileContentResponse = await drive.files.get({
+//               fileId: file.id,
+//               alt: 'media',
+//           }, {
+//               responseType: 'json',
+//           });
 
-          // Assuming jsonContent is an array and we want to print all its elements
-          const jsonContent = fileContentResponse.data;
-          fileContents.push({
-              fileName: file.name,
-              content: jsonContent, // Directly using the fetched JSON content
-          });
-      }
+//           // Assuming jsonContent is an array and we want to print all its elements
+//           const jsonContent = fileContentResponse.data;
+//           fileContents.push({
+//               fileName: file.name,
+//               content: jsonContent, // Directly using the fetched JSON content
+//           });
+//       }
 
-      res.json(fileContents); // Send the contents of all fetched JSON files in the response
-  } catch (error) {
-      console.error('Error processing JSON files:', error.message);
-      res.status(500).send('Failed to process JSON files');
-  }
-});
+//       res.json(fileContents); // Send the contents of all fetched JSON files in the response
+//   } catch (error) {
+//       console.error('Error processing JSON files:', error.message);
+//       res.status(500).send('Failed to process JSON files');
+//   }
+// });
 
 // Make sure to call the method
 fetchAndProcessJsonFiles(auth);

@@ -64,6 +64,7 @@ document.getElementById('deleteAllFilesBtn').addEventListener('click', async () 
 </script> -->
 
     <script>
+        // Fetch files on page load
         async function fetchFiles() {
     try {
         const response = await fetch('/api/files');
@@ -141,6 +142,10 @@ function displayFilesForFolder(folders, selectedFolderName) {
             image.alt = "Sample Image";
             image.style.width = "100px"; // Adjust as needed
             image.style.height = "100px"; // Adjust as needed
+            // Add a mouseover event listener to display the time modified of the file as a tooltip
+            image.title = `${file.modifiedTime}`; 
+
+                                   
 
             anchor.appendChild(image);
             fileDisplayArea.appendChild(anchor);
@@ -148,6 +153,7 @@ function displayFilesForFolder(folders, selectedFolderName) {
     } else {
         fileDisplayArea.textContent = 'No files in this folder.';
     }
+
 }
 
 
