@@ -8,7 +8,7 @@ html, body {
 #container {
     margin: 0;
     padding: 0;
-    height: 90%;
+    height: 87%;
     width:auto;
     background-color: #0d1117;
 }
@@ -90,47 +90,51 @@ p{
     margin: 2% 0% 0% 0%;
 }
 
+/* Main navbar styling */
 nav {
+    display: flex; /* Use flexbox for easy alignment */
+    justify-content: space-between; /* Space between the items */
+    align-items: center; /* Align items vertically */
     background-color: #BA9063; /* Set background color */
-    padding: 25px 0; /* Increase vertical padding */
+    padding: 0 20px; /* Adjust padding to suit your design */
 }
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+/* Navbar home link styling */
+.navbar-home {
+    display: flex;
+    align-items: center; /* Center align the items vertically */
+    margin-left: 50px;
 }
 
-nav ul li {
-    display: inline;
+/* Navbar other links styling */
+.navbar-links {
+    display: flex;
+    gap: 10px; 
+    margin-right: 100px;
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: black;
-    padding: 15px 25px; /* Increase padding */
-    font-size: 18px; /* Increase font size */
-}
-
+/* Generic link styling */
 .navbar-link {
     color: maroon;
     text-decoration: none;
-    margin-left: 100px; /* Add right margin for space between links */
+    padding: 15px 25px;
     font-weight: 600;
 }
 
-.ulList {
-    display: flex;
-    margin: 0;
+/* Image inside navbar link */
+.navbar-img {
+    width: 60px;
+    height: 60px;
+    /* margin-right: 10px;  */
 }
 
-/* CSS style for navbar image */
-.navbar-img {
-    width: 60px; /* Adjust width as needed */
-    height: 60px; /* Maintain aspect ratio */
-    margin-left: 10px; /* Add right margin for spacing */
-    text-decoration: none;
+/* Ensure the list is displayed as a flex container */
+.ulList {
+    display: flex;
+    justify-content: center; /* Centering the list items */
+    width: 100%;
 }
+
 
 /*  */
 /*  */

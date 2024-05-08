@@ -440,8 +440,12 @@ app.delete('/api/delete-all-files', async (req, res) => {
   }
 });
 
-
+/////////////////////////////////////////////////////////////////
 app.use(express.static('public')); 
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Home.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);

@@ -17,7 +17,7 @@ let currentIndex = 0;
 var pathname = window.location.pathname;
 // console.log(pathname);
 
-if ((pathname ==='/') || pathname.includes('index.html') || pathname.includes('Evaluate.html') ) {
+if ( pathname.includes('GlyphCo.html') || pathname.includes('Evaluate.html') ) {
     generateWord();
 }
 
