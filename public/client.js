@@ -10,12 +10,28 @@ const noBack = document.getElementById("No");
 // import Swal from "sweetalert2";
 
 
+
 // Used to fill the canvas with any color
-function canvasBackground(){
-    ctx.fillStyle = '#FFFFFF'; // White
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+// function canvasBackground(){
+//     // ctx.fillStyle = "red"; // White
+//     // ctx.fillRect(0, 0, canvas.width, canvas.height);
+//     const background = new Image();
+//     background.src = 'Pictures/transparent-background-layout-vector-23126529.jpg'
+//     ctx.drawImage(background,0,0);
+// }
+
+let backgroundLoaded = false;
+const background = new Image();
+background.src = 'Pictures/transparent-background-layout-vector-23126529.jpg'; // Ensure path is correct
+background.onload = function() {
+    backgroundLoaded = true;
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 }
 
+// Function to redraw the background image
+function redrawBackground() {
+        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+}
 
 //constants & variables
 let isDrawing = false;
@@ -30,8 +46,6 @@ var pathname = window.location.pathname;
 if ( pathname.includes('GlyphCo.html') || pathname.includes('Evaluate.html') ) {
     generateWord();
 }
-
-canvasBackground();
 
 
 //event listeners for mouse and touch (do NOT update to pointer events)
@@ -106,20 +120,23 @@ toolbar.addEventListener('click', async e => {
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
-        canvasBackground();
+        // canvasBackground();
+        redrawBackground()
     }
 
     if (e.target.id === 'clearBtn') {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
-        canvasBackground();
+        // canvasBackground();
+        redrawBackground()
     }
 
     if (e.target.id === 'newWordBtn') {
         generateWord();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = []; 
-        canvasBackground();
+        // canvasBackground();
+        redrawBackground();
     }
     
     if (e.target.id === 'setWordBtn') {
