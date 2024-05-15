@@ -4,7 +4,17 @@ const ctx = canvas.getContext('2d');
 const toolbar = document.getElementById('toolbar');
 const customWord = document.getElementById("customWord");
 const wordToWrite = document.getElementById("wordToWrite");
+const feedback = document.getElementById("evaluateBar");
+const yesBack = document.getElementById("Yes");
+const noBack = document.getElementById("No");
 // import Swal from "sweetalert2";
+
+
+// Used to fill the canvas with any color
+function canvasBackground(){
+    ctx.fillStyle = '#FFFFFF'; // White
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 
 //constants & variables
@@ -20,6 +30,8 @@ var pathname = window.location.pathname;
 if ( pathname.includes('GlyphCo.html') || pathname.includes('Evaluate.html') ) {
     generateWord();
 }
+
+canvasBackground();
 
 
 //event listeners for mouse and touch (do NOT update to pointer events)
@@ -57,8 +69,14 @@ toolbar.addEventListener('click', async e => {
             }
             else if (origin === 'evaluate'){
                 number = 3;
-                // console.log('Button clicked on Evaluation');
-                // console.log(number)
+                // document.getElementById("Thanks").style.display = 'none'
+                // feedback.style.display = 'block';
+
+                // Send the photo to python server to get its guess and save its repsonse in a const 
+                // const response = await sendToEvaluate(png,json);
+                // console.log(response);
+                // Display the guess in the html
+                // document.getElementById("pythonGuess").innerHTML = response;
             }
             //sets initial drawing time to 0, updates the rest of the array
             startingTime = word[0][0][2];
@@ -88,18 +106,20 @@ toolbar.addEventListener('click', async e => {
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
+        canvasBackground();
     }
 
     if (e.target.id === 'clearBtn') {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
+        canvasBackground();
     }
 
     if (e.target.id === 'newWordBtn') {
         generateWord();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = []; 
-
+        canvasBackground();
     }
     
     if (e.target.id === 'setWordBtn') {
@@ -115,6 +135,51 @@ toolbar.addEventListener('click', async e => {
     }
 });
 
+
+// feedback.addEventListener('click', async e => {
+//     let answer;
+
+//     if (e.target.id === 'Yes') {
+//         answer = 'Yes';
+//         feedback.style.display = 'none'
+//         document.getElementById("Thanks").style.display = 'block'
+//     }
+
+//     if (e.target.id === 'No') {
+//         answer = 'No'
+//         feedback.style.display = 'none'
+//         document.getElementById("Thanks").style.display = 'block'
+
+//         // ctx.clearRect(0, 0, canvas.width, canvas.height);
+//         // word = [];
+//     }
+    
+//     if(answer){
+//         console.log(answer);
+//         // Send answer to python server
+//         // await sendToPythonServer(answer);
+//     }
+
+
+//     // if (e.target.id === 'newWordBtn') {
+//     //     generateWord();
+//     //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+//     //     word = []; 
+
+//     // }
+    
+//     // if (e.target.id === 'setWordBtn') {
+//     //     const text = customWord.value;
+//     //     const name = text.toLowerCase();
+//     //     // console.log(name)
+//     //     translateName(name)
+//     //     if (text != "") {
+//     //         wordToWrite.innerHTML = text;
+//     //         // displayImage(text); // Ensure this line is here to display the image for the custom word
+//     //     }
+//     //     customWord.value = "";
+//     // }
+// });
 
 
 // const words = [
