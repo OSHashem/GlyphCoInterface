@@ -20,18 +20,18 @@ const noBack = document.getElementById("No");
 //     ctx.drawImage(background,0,0);
 // }
 
-let backgroundLoaded = false;
-const background = new Image();
-background.src = 'Pictures/transparent-background-layout-vector-23126529.jpg'; // Ensure path is correct
-background.onload = function() {
-    backgroundLoaded = true;
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-}
+// let backgroundLoaded = false;
+// const background = new Image();
+// background.src = 'Pictures/transparent-background-layout-vector-23126529.jpg'; // Ensure path is correct
+// background.onload = function() {
+//     backgroundLoaded = true;
+//     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+// }
 
 // Function to redraw the background image
-function redrawBackground() {
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-}
+// function redrawBackground() {
+//         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+// }
 
 //constants & variables
 let isDrawing = false;
@@ -121,14 +121,14 @@ toolbar.addEventListener('click', async e => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
         // canvasBackground();
-        redrawBackground()
+        // redrawBackground()
     }
 
     if (e.target.id === 'clearBtn') {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = [];
         // canvasBackground();
-        redrawBackground()
+        // redrawBackground()
     }
 
     if (e.target.id === 'newWordBtn') {
@@ -136,7 +136,7 @@ toolbar.addEventListener('click', async e => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         word = []; 
         // canvasBackground();
-        redrawBackground();
+        // redrawBackground();
     }
     
     if (e.target.id === 'setWordBtn') {
