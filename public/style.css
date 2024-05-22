@@ -10,7 +10,8 @@ html, body {
     padding: 0;
     height: 87%;
     width:auto;
-    background-color: #0d1117;
+    background-color: white;
+    /* #0d1117 */
 }
 
 #toolbar {
@@ -86,7 +87,7 @@ p{
 }
 
 #drawingBoard{
-    background-color: white;
+    background-color: black;
     margin: 2% 0% 0% 0%;
 }
 
@@ -95,7 +96,7 @@ nav {
     display: flex; /* Use flexbox for easy alignment */
     justify-content: space-between; /* Space between the items */
     align-items: center; /* Align items vertically */
-    background-color: #BA9063; /* Set background color */
+    background-color: #CCA66F; /* Set background color */
     padding: 0 20px; /* Adjust padding to suit your design */
 }
 
@@ -133,6 +134,13 @@ nav {
     display: flex;
     justify-content: center; /* Centering the list items */
     width: 100%;
+}
+
+#imageContainer {
+    width : '300px';
+    height: '300px';
+    margin-top: 15px;
+    margin-right: 15px;
 }
 
 

@@ -120,24 +120,6 @@ app.post('/upload-file', upload.fields([{ name: 'jsonFile' }, { name: 'pngFile' 
   }
 });
 
-
-// app.post('/create-folder', upload.none(), async (req, res)  => {
-  
-//   const parentFolderId = '1jSRxEukjPAFFYF_qK6MuFMit1aHpMFtD'; // Omar, folder ID for the folder that will contain the uploaded folder
-  
-//   const nameOfFolder   = req.body.nameOfFolder;
-//   console.log(nameOfFolder)
-
-
-//   try {
-//       const folderId = await createFolder(nameOfFolder, parentFolderId);
-//       res.status(200).json({ folderId });
-//   } catch (error) {
-//       console.error('Error creating folder:', error.message);
-//       res.status(500).json({ message: 'Error creating folder' });
-//   }
-// });
-
 // Function to create folder in Google Drive
 async function createFolder(folderName, parentFolderId) {
   try {
@@ -331,7 +313,6 @@ async function fetchAndProcessJsonFiles(auth) {
           });
 
           const jsonContent = fileContentResponse.data;
-          // The jsonContent is an array i want to loop and print all the elements in this array
           // console.log(jsonContent);
           // const jsonArray = JSON.parse(jsonContent)
           // const jsonArray2 =jsonArray.slice(2)
@@ -348,9 +329,6 @@ async function fetchAndProcessJsonFiles(auth) {
             // console.log(yPos);
 
           // console.log(`Content for ${file.name}:`, jsonContent);
-
-          // Here, you can process the JSON content as needed
-          // For example, store it in a database, or perform data analysis
       }
   } catch (error) {
       console.error('Error fetching JSON files:', error.message);
@@ -402,7 +380,7 @@ fetchAndProcessJsonFiles(auth);
 
 
 ///////////////////////////////////////////////////////////////////////
-//// DANGER ZONE !!!
+//// !!!!!!!!!! DANGER ZONE !!!!!!!!!!!
 
 async function deleteAllFiles(auth) {
   const drive = google.drive({ version: 'v3', auth });
