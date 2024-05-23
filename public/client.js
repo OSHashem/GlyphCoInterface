@@ -244,7 +244,7 @@ function handleWritingStart(e) {
     ctx.beginPath();
     ctx.moveTo(mousePos.x, mousePos.y);
     ctx.lineWidth = 5;
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "#333";
     ctx.lineCap = 'round';
     ctx.fill();
 

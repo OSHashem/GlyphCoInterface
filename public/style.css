@@ -10,7 +10,7 @@ html, body {
     padding: 0;
     height: 87%;
     width:auto;
-    background-color: white;
+    background-color: #0d1117;
     /* #0d1117 */
 }
 
@@ -87,7 +87,7 @@ p{
 }
 
 #drawingBoard{
-    background-color: black;
+    background-color: white;
     margin: 2% 0% 0% 0%;
 }
 
